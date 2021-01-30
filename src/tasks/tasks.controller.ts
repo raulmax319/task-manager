@@ -13,6 +13,7 @@ import {
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { PatchTaskDto } from './dto/patch-task.dto';
+import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task, TaskStatus } from './tasks.model';
 import { TasksService } from './tasks.service';
 
@@ -21,7 +22,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getTasks(@Query() filter: GetTasksFilterDto): Task[] {
+  getTasks(@Query(ValidationPipe) filter: GetTasksFilterDto): Task[] {
     if (Object.keys(filter).length) {
       return this.tasksService.getTasksWithFilter(filter);
     } else {
@@ -46,7 +47,10 @@ export class TasksController {
   }
 
   @Patch('/:id/status')
-  updateTaskStatus(@Param('id') id: string, @Body() status: TaskStatus): Task {
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body('status', TaskStatusValidationPipe) status: TaskStatus,
+  ): Task {
     const patchTask: PatchTaskDto = { id, status };
     return this.tasksService.updateTaskStatus(patchTask);
   }
