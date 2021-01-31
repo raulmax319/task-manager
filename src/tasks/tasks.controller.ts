@@ -22,6 +22,11 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @Get()
+  getTasks(@Query(ValidationPipe) filter: GetTasksFilterDto) {
+    return this.tasksService.getTasks(filter);
+  }
+
   @Get('/:id')
   getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
     return this.tasksService.getTaskById(id);
@@ -45,14 +50,4 @@ export class TasksController {
   ): Promise<Task> {
     return this.tasksService.updateTaskStatus(id, status);
   }
-
-  /*   @Get()
-  getTasks(@Query(ValidationPipe) filter: GetTasksFilterDto): Task[] {
-    if (Object.keys(filter).length) {
-      return this.tasksService.getTasksWithFilter(filter);
-    } else {
-      return this.tasksService.getAllTasks();
-    }
-  }
- */
 }
