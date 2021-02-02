@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Task } from 'src/tasks/Entities/tasks.entity';
 
 @Entity()
 @Unique(['email'])
@@ -25,6 +28,10 @@ export class User extends BaseEntity {
 
   @Column()
   salt: string;
+
+  // eslint-disable-next-line prettier/prettier
+  @OneToMany(_type => Task, task => task.user, { eager: true })
+  tasks: Task[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

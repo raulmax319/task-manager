@@ -13,8 +13,11 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/auth/Entities/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Task } from './Entities/tasks.entity';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { TaskStatus } from './tasks-status.enum';
@@ -26,8 +29,11 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getTasks(@Query(ValidationPipe) filter: GetTasksFilterDto) {
-    return this.tasksService.getTasks(filter);
+  getTasks(
+    @Query(ValidationPipe) filter: GetTasksFilterDto,
+    @GetUser() user: User,
+  ) {
+    return this.tasksService.getTasks(filter, user);
   }
 
   @Get('/:id')
@@ -37,8 +43,11 @@ export class TasksController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto);
+  createTask(
+    @Body() createTaskDto: CreateTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto, user);
   }
 
   @Delete('/:id')
