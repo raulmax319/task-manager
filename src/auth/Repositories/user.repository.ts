@@ -10,11 +10,11 @@ import { User } from '../Entities/user.entity';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   async createAccount(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, email, password } = authCredentialsDto;
+    const { username, password } = authCredentialsDto;
 
     const user = new User();
     user.username = username;
-    user.email = email;
+    //user.email = email;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 
@@ -38,7 +38,7 @@ export class UserRepository extends Repository<User> {
 
   async validateUser(authCredentialsDto: AuthCredentialsDto): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { username, email, password } = authCredentialsDto;
+    const { username, password } = authCredentialsDto;
 
     const user = await this.findOne({ username });
 
