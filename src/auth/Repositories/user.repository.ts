@@ -9,22 +9,25 @@ import { User } from '../Entities/user.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async createAccount(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  async createAccount(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ username: string }> {
     const { username, password } = authCredentialsDto;
 
     const user = new User();
     user.username = username;
-    //user.email = email;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 
     try {
       await user.save();
       console.log('account creation was successful.');
+      return { username: user.username };
     } catch (err) {
       const [detail] = err.detail.split(' ').splice(1);
       // eslint-disable-next-line prefer-const
       let [key, name] = detail.split('=');
+      //not using key Email right now as i removed email column
       key.match(/(?=.*email)/) ? (key = 'Email') : (key = 'Username');
 
       if (err.code === '23505')

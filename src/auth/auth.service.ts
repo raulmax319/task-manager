@@ -13,7 +13,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createAccount(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  async createAccount(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ username: string }> {
     return await this.userRepository.createAccount(authCredentialsDto);
   }
 

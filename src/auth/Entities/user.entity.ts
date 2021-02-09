@@ -11,7 +11,6 @@ import * as bcrypt from 'bcryptjs';
 import { Task } from 'src/tasks/Entities/tasks.entity';
 
 @Entity()
-@Unique(['email'])
 @Unique(['username'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -19,9 +18,6 @@ export class User extends BaseEntity {
 
   @Column()
   username: string;
-
-  // @Column()
-  // email: string;
 
   @Column()
   password: string;
