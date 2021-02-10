@@ -15,7 +15,7 @@ export class AuthService {
 
   async createAccount(
     authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ username: string }> {
+  ): Promise<{ username: string; date: string }> {
     return await this.userRepository.createAccount(authCredentialsDto);
   }
 

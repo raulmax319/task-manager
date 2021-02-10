@@ -25,6 +25,9 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
 
+  @Column()
+  creationDate: string;
+
   // eslint-disable-next-line prettier/prettier
   @OneToMany(_type => Task, task => task.user, { eager: true })
   tasks: Task[];

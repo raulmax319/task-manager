@@ -10,7 +10,7 @@ export class AuthController {
   async signUp(
     @Body(ValidationPipe)
     authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ username: string }> {
+  ): Promise<{ username: string; date: string }> {
     return this.authService.createAccount(authCredentialsDto);
   }
 
