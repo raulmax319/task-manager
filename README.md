@@ -91,6 +91,7 @@ Permision: none
 | Field | Type | Description |
 | ----- | :--: | ----------- |
 | username | String | Username of the User |
+| date | String | Creation Date of the User |
 
 #### Error 4xx
 | Field | Description |
@@ -106,14 +107,26 @@ Permision: none
 ### Task - Get User's tasks
 
 ```
-/tasks/:search?/:status?
+/tasks/
 ```
-Permission: User
+Permission: admin
 
 #### Success 200
 | Field | Type | Description |
 | ----- | :--: | ----------- |
-| task  | Task[] | Array of tasks of the authenticated User. |
+| task  | Task[ ] | Array of tasks of the authenticated User. |
+
+### Query string parameters
+
+```
+/tasks/?search=clean+house&status=open
+```
+#### Success 200
+
+| Query string param | Required / Optional | Return Type | Description |
+| ------------------ | :-----------------: | ----------- | ----------- |
+|       search       |       Optional      |    Task     | The search term of the task to search for |
+|       status       |       Optional      |    Task[ ]  | The status of the tasks you want to filter |
 
 #### Error 4xx
 | Field | Description |
